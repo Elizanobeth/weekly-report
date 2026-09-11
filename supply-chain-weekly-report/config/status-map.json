@@ -1,0 +1,8 @@
+{
+  "未开始": { "kpiStatus": "未开始", "light": "绿" },
+  "正常": { "kpiStatus": "进行中", "light": "绿" },
+  "有风险": { "kpiStatus": "进行中", "light": "黄" },
+  "需协同": { "kpiStatus": "进行中", "light": "红" },
+  "暂停": { "kpiStatus": "暂停", "light": "黄" },
+  "已完成": { "kpiStatus": "已完成", "light": "绿" }
+}

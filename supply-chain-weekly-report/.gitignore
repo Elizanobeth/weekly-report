@@ -2,3 +2,6 @@
 .env.*
 !.env.example
 capability-report.json
+
+# 本地导出的周报可能包含真实业务数据，不提交到版本库。
+/周报记录表.xlsx

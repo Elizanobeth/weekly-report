@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "node src/server/index.mjs",
+    "dev": "node --watch src/server/index.mjs",
     "test": "node --test",
     "check:wps": "node scripts/wps-capability-check.mjs"
   }

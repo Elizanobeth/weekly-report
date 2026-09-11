@@ -1,0 +1,39 @@
+{
+  "kpi": {
+    "projectName": "项目名称",
+    "taskName": "关键任务",
+    "owner": "单项责任人",
+    "currentStatus": "当前状态",
+    "completionRate": "完成比例",
+    "plannedCompletionRate": "计划比例",
+    "light": "灯光",
+    "progressNote": "进度说明"
+  },
+  "workItem": {
+    "id": "事项ID",
+    "itemType": "事项类型",
+    "kpiRecordId": "KPI记录ID",
+    "projectName": "项目名称",
+    "taskName": "任务名称",
+    "owner": "责任人",
+    "currentStatus": "当前状态",
+    "completionRate": "当前完成比例"
+  },
+  "weeklyRecord": {
+    "id": "周报记录ID",
+    "recordType": "记录类型",
+    "week": "周报周期",
+    "workItemId": "关联事项",
+    "updateType": "更新类型",
+    "progress": "本周主要进展",
+    "actualCompletionRate": "当前完成比例",
+    "plannedCompletionRate": "当周计划比例",
+    "status": "本周状态",
+    "problem": "存在问题",
+    "helpNeeded": "需要帮助",
+    "nextPlan": "下周计划",
+    "nextTargetCompletionRate": "下周目标完成比例",
+    "owner": "责任人",
+    "updatedAt": "更新时间"
+  }
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <title>供应链信息化团队周报</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36" role="img"><path d="M7 10.5 18 4l11 6.5v15L18 32 7 25.5z"/><path d="m7 10.5 11 6.4 11-6.4M18 16.9V32"/></svg>
+          </div>
+          <div>
+            <p class="eyebrow">SUPPLY CHAIN DIGITAL</p>
+            <h1>团队周报</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <label class="week-picker">
+            <span>汇报周期</span>
+            <select id="weekSelect" aria-label="选择汇报周期"></select>
+          </label>
+          <button id="finalizeButton" class="primary-button" type="button">生成最终版</button>
+        </div>
+      </header>
+
+      <div class="demo-strip">
+        <span class="demo-dot"></span>
+        当前为模拟数据，用于验证页面和业务规则
+        <span id="updatedAt" class="updated-at"></span>
+      </div>
+
+      <nav id="pageNav" class="page-nav" aria-label="汇报页面导航"></nav>
+
+      <main id="report" class="report" aria-live="polite">
+        <div class="loading-state">
+          <div class="loading-mark"></div>
+          <p>正在整理本周周报…</p>
+        </div>
+      </main>
+
+      <footer class="footer-bar">
+        <p><kbd>←</kbd><kbd>→</kbd> 切换页面</p>
+        <p>仅展示所选周次有填报记录的任务</p>
+      </footer>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
