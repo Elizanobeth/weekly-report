@@ -2,6 +2,7 @@ const state = {
   report: null,
   pages: [],
   activePage: 0,
+  polling: false,
 };
 
 const elements = {
@@ -10,6 +11,8 @@ const elements = {
   pageNav: document.querySelector("#pageNav"),
   report: document.querySelector("#report"),
   updatedAt: document.querySelector("#updatedAt"),
+  dataSourceLabel: document.querySelector("#dataSourceLabel"),
+  syncState: document.querySelector("#syncState"),
   toast: document.querySelector("#toast"),
 };
 
@@ -188,18 +191,46 @@ function setActivePage(index) {
   renderPage();
 }
 
-async function loadReport(week) {
-  elements.report.innerHTML = `<div class="loading-state"><div class="loading-mark"></div><p>正在整理本周周报…</p></div>`;
+async function loadReport(week, { silent = false } = {}) {
+  if (!silent) elements.report.innerHTML = `<div class="loading-state"><div class="loading-mark"></div><p>正在整理本周周报…</p></div>`;
   const response = await fetch(`/api/report?week=${encodeURIComponent(week)}`);
   if (!response.ok) throw new Error((await response.json()).error || "周报读取失败");
-  state.report = await response.json();
+  const nextReport = await response.json();
+  if (silent && nextReport.sourceVersion === state.report?.sourceVersion) return false;
+
+  const activePage = state.pages[state.activePage];
+  state.report = nextReport;
   state.pages = [
     { type: "summary", label: "团队摘要" },
     ...state.report.members.map((member, memberIndex) => ({ type: "member", label: member.name, count: member.tasks.length, memberIndex })),
   ];
-  state.activePage = 0;
-  elements.updatedAt.textContent = `数据更新：${dateTime(state.report.dataUpdatedAt)}`;
+  state.activePage = silent && activePage
+    ? Math.max(0, state.pages.findIndex((page) => page.type === activePage.type && page.label === activePage.label))
+    : 0;
+  elements.dataSourceLabel.textContent = state.report.dataSource === "excel"
+    ? "当前读取本地 Excel 模拟表，保存后自动同步"
+    : "当前使用 JSON 模拟数据";
+  elements.updatedAt.textContent = state.report.sourceModifiedAt
+    ? `Excel 保存：${dateTime(state.report.sourceModifiedAt)}`
+    : `数据更新：${dateTime(state.report.dataUpdatedAt)}`;
+  elements.syncState.textContent = silent ? "已同步" : "同步正常";
+  elements.syncState.classList.remove("waiting");
   renderPage();
+  return true;
+}
+
+async function pollExcel() {
+  if (state.polling || !state.report || state.report.dataSource !== "excel") return;
+  state.polling = true;
+  try {
+    const changed = await loadReport(elements.weekSelect.value, { silent: true });
+    if (changed) notify("Excel 已保存，页面内容已自动更新");
+  } catch {
+    elements.syncState.textContent = "等待 Excel 保存";
+    elements.syncState.classList.add("waiting");
+  } finally {
+    state.polling = false;
+  }
 }
 
 async function initialize() {
@@ -264,3 +295,4 @@ document.addEventListener("keydown", (event) => {
 });
 
 initialize();
+window.setInterval(pollExcel, 3000);
